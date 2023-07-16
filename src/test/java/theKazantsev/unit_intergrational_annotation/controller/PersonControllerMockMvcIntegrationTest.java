@@ -58,7 +58,7 @@ public class PersonControllerMockMvcIntegrationTest {
     @Test
     public void givenId_whenGetExistingPerson_thenStatus200andPersonReturned() throws Exception {
 
-        long id = createTestPerson("Michail").getId();
+        long id = createTestPersonInDB("Michail").getId();
 
         mockMvc.perform(
                 get("/persons/{id}", id))
@@ -80,11 +80,13 @@ public class PersonControllerMockMvcIntegrationTest {
     @Test
     public void givePerson_whenUpdate_thenStatus200andUpdatedReturns() throws Exception {
 
-        long id = createTestPerson("Mock").getId();
+        Person person = createTestPersonInDB("Mock");
+
+        person.setName("Mockhail");
 
         mockMvc.perform(
-                put("/persons/{id}", id)
-                    .content(objectMapper.writeValueAsString(new Person("Mockhail")))
+                put("/persons/{id}", person.getId())
+                    .content(objectMapper.writeValueAsString(person))
                     .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value("1"))
@@ -94,7 +96,7 @@ public class PersonControllerMockMvcIntegrationTest {
     @Test
     public void givenPerson_whenDeletePerson_thenStatus200() throws Exception {
 
-        Person person = createTestPerson("Mock");
+        Person person = createTestPersonInDB("Mock");
 
         mockMvc.perform(
                 delete("/persons/{id}", person.getId()))
@@ -105,8 +107,8 @@ public class PersonControllerMockMvcIntegrationTest {
     @Test
     public void givenPersons_whenGetPersons_thenStatus200() throws Exception {
 
-        Person p1 = createTestPerson("Mock");
-        Person p2 =createTestPerson( "Mockhail");
+        Person p1 = createTestPersonInDB("Mock");
+        Person p2 = createTestPersonInDB( "Mockhail");
 
         mockMvc.perform(
                 get("/persons"))
@@ -114,7 +116,7 @@ public class PersonControllerMockMvcIntegrationTest {
             .andExpect(content().json(objectMapper.writeValueAsString(Arrays.asList(p1, p2))));
     }
 
-    private Person createTestPerson(String name) {
+    private Person createTestPersonInDB(String name) {
         Person person = new Person(name);
         return repository.save(person);
     }
