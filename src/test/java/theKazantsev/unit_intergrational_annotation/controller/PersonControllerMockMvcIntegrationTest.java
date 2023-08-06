@@ -41,8 +41,7 @@ public class PersonControllerMockMvcIntegrationTest {
     }
 
     @Test
-    public void givenPerson_whenAdd_thenStatus201andPersonReturned() throws Exception {
-
+    public void givenPersonWhenAddThenStatus201andPersonReturned() throws Exception {
         Person person = new Person("Mockhail");
 
         mockMvc.perform(
@@ -56,8 +55,7 @@ public class PersonControllerMockMvcIntegrationTest {
     }
 
     @Test
-    public void givenId_whenGetExistingPerson_thenStatus200andPersonReturned() throws Exception {
-
+    public void givenIdWhenGetExistingPersonThenStatus200andPersonReturned() throws Exception {
         long id = createTestPersonInDB("Michail").getId();
 
         mockMvc.perform(
@@ -67,10 +65,8 @@ public class PersonControllerMockMvcIntegrationTest {
             .andExpect(jsonPath("$.name").value("Mockhail"));
     }
 
-
     @Test
-    public void givenId_whenGetNotExistingPerson_thenStatus404anExceptionThrown() throws Exception {
-
+    public void givenIdWhenGetNotExistingPersonThenStatus404anExceptionThrown() throws Exception {
         mockMvc.perform(
                 get("/persons/1"))
             .andExpect(status().isNotFound())
@@ -78,10 +74,8 @@ public class PersonControllerMockMvcIntegrationTest {
     }
 
     @Test
-    public void givePerson_whenUpdate_thenStatus200andUpdatedReturns() throws Exception {
-
+    public void givePersonWhenUpdateThenStatus200andUpdatedReturns() throws Exception {
         Person person = createTestPersonInDB("Mock");
-
         person.setName("Mockhail");
 
         mockMvc.perform(
@@ -94,8 +88,7 @@ public class PersonControllerMockMvcIntegrationTest {
     }
 
     @Test
-    public void givenPerson_whenDeletePerson_thenStatus200() throws Exception {
-
+    public void givenPersonWhenDeletePersonThenStatus200() throws Exception {
         Person person = createTestPersonInDB("Mock");
 
         mockMvc.perform(
@@ -105,8 +98,7 @@ public class PersonControllerMockMvcIntegrationTest {
     }
 
     @Test
-    public void givenPersons_whenGetPersons_thenStatus200() throws Exception {
-
+    public void givenPersonsWhenGetPersonsThenStatus200() throws Exception {
         Person p1 = createTestPersonInDB("Mock");
         Person p2 = createTestPersonInDB( "Mockhail");
 
